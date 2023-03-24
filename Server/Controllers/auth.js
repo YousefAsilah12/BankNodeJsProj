@@ -1,13 +1,13 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-
+const User = require('../model/User');
 const loginUser = async (req, res, next) => {
+
   const {
     email,
     password
   } = req.body;
   try {
-
     // Find user by email
     const user = await User.findOne({
       email: email
@@ -16,7 +16,7 @@ const loginUser = async (req, res, next) => {
       res.statusCode = 404;
       throw new Error('User not found');
     }
-
+    console.log("login",user.role);
     // Verify password
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
@@ -26,8 +26,8 @@ const loginUser = async (req, res, next) => {
 
     // Generate JWT token
     const token = jwt.sign({
-        userId: user.id,
-        type: user.type
+        userId: user.passportId,
+        role: user.role
       },
       process.env.JWTSECRET, {
         expiresIn: '5m'
@@ -48,5 +48,56 @@ const loginUser = async (req, res, next) => {
   }
 };
 
+const authorize = async (req, res, next) => {
+  const cookie = req.cookies;
+  const token = cookie.jwt;
+  if (!token) {
+    return res.status(401).send({
+      message: 'Unauthorized'
+    });
+  }
+  try {
+    const decryptToken = jwt.verify(token, process.env.JWTSECRET);
+    if(!decryptToken){
+      throw new Error("Token is not valid, Unauthorized")
+    }
+      next();
+  } catch (e) {
+    return res.status(401).send({
+      message: e.message
+    });
+  }
+}
+const adminAuthorize = async (req, res, next) => {
+  const cookie = req.cookies;
+  const token = cookie.jwt;
+  if (!token) {
+    return res.status(401).send({
+      message: 'Unauthorized'
+    });
+  }
+  try {
+    const decryptToken = jwt.verify(token, process.env.JWTSECRET);
+    if(!decryptToken){
+      throw new Error("Token is not valid, Unauthorized")
+    }
+    console.log(decryptToken.role);
+    if (decryptToken.role === "user") {
+      throw new Error('Unauthorized, you are Regular User');
+    } else if (decryptToken.role === "manager") {
+      next();
+    } else {
+      throw new Error('Unauthorized')
+    }
+  } catch (e) {
+    return res.status(401).send({
+      message: e.message
+    });
+  }
+}
 
-module.exports ={loginUser}
+module.exports = {
+  loginUser,
+  authorize,
+  adminAuthorize
+}
