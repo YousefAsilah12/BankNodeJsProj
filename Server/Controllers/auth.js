@@ -7,6 +7,7 @@ const loginUser = async (req, res, next) => {
     email,
     password
   } = req.body;
+  console.log(email,password);
   try {
     // Find user by email
     const user = await User.findOne({
@@ -39,7 +40,7 @@ const loginUser = async (req, res, next) => {
       httpOnly: true,
       expires: new Date(Date.now() + 5 * 60 * 1000) // expires in 5 minutes
     });
-
+  
     res.json({
       success: true
     });

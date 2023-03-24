@@ -25,9 +25,8 @@ router.route("/login").post(loginUser)
 
 router.use(adminAuthorize)
 router.route("/:id").get(getByPId)
-router.route("/").get(getAll)
+router.route("/").get(getAll).post(addUser);
 
-router.route("/").post(addUser);
 router.route("/deposit").post(depositCash);
 router.route("/updateCredit").post(updateCredit);
 router.route("/withdraw").post(withdraw);
