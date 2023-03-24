@@ -1,10 +1,20 @@
 const express = require('express');
 const router = express.Router();
 const {
-  loginUser
+  loginUser,
+  authorize,
+  adminAuthorize
 } = require('../Controllers/auth')
 
-const {addUser} = require('../Controllers/usersController')
+const {
+  addUser,
+  depositCash,
+  getByPId,
+  updateCredit,
+  withdraw,
+  transfer,
+  getAll
+} = require('../Controllers/usersController')
 
 
 
@@ -12,8 +22,16 @@ const {addUser} = require('../Controllers/usersController')
 
 router.route("/login").post(loginUser)
 
-router.route("/").post(addUser);
 
+router.use(adminAuthorize)
+router.route("/:id").get(getByPId)
+router.route("/").get(getAll)
+
+router.route("/").post(addUser);
+router.route("/deposit").post(depositCash);
+router.route("/updateCredit").post(updateCredit);
+router.route("/withdraw").post(withdraw);
+router.route("/transfer").post(transfer)
 
 
 module.exports = router
