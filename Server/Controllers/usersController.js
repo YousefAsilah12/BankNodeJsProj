@@ -44,13 +44,14 @@ const getByPId=async(req,res,next)=>{
     
   try {
     if(!passportId) throw new Error("passportId is undefined");
-
+    console.log(passportId);
     // Find user by passport ID
     const user = await User.findOne({ passportId });
     if (!user) {
        res.status(404)
        throw new Error( 'User not found') 
     }
+    console.log(user);
     res.json(user);
   } catch (err) {
     next(err);

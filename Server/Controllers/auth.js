@@ -31,14 +31,14 @@ const loginUser = async (req, res, next) => {
         role: user.role
       },
       process.env.JWTSECRET, {
-        expiresIn: '5m'
+        expiresIn: '1h'
       }
     );
 
     // Set JWT token as a cookie in the response
     res.cookie('jwt', token, {
       httpOnly: true,
-      expires: new Date(Date.now() + 5 * 60 * 1000) // expires in 5 minutes
+      expires: new Date(Date.now() + 60 * 60 * 1000) // expires in 1 hour
     });
   
     res.json({
