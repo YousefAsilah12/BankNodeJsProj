@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { UserDisplay } from "../user/user";
+import { UserDisplay } from "../user/User";
 import { BankApi } from "../../hooks/userApi/UserHook";
 export const UserList = () => {
   const [users, setUsers] = useState(null);

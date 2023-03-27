@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { BankApi } from "../../hooks/userApi/UserHook";
-import { UserDisplay } from "../user/user";
+import { UserDisplay } from "../user/User";
 
 export const SpecificUser = () => {
   const [UserRes, setUserRes] = useState(null)

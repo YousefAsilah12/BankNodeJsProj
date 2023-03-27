@@ -10,11 +10,6 @@ import { Withdraw } from "../withdraw/Withdraw"
 
 
 
-
-
-
-
-
 export const Home = () => {
   return <div>
 
