@@ -1,4 +1,5 @@
 import { DepositForm } from "../deposit/Deposit"
+import { SpecificUser } from "../specificUser/SpecificUser"
 import { Transfer } from "../transfer/Transfer"
 import { UpdateCreditForm } from "../updateCreadit/UpdateCredit"
 import { UserList } from "../userList/UserList"
@@ -14,7 +15,7 @@ export const Home = () => {
   return <div>
 
     <UserList />
-    <SpecificUserList />
+    <SpecificUser />
     <DepositForm />
     <Withdraw />
     <UpdateCreditForm />
